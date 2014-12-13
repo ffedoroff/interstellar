@@ -1,3 +1,5 @@
+<?php
+
 include "credentials.php";
 include "GCMPushMessage.php";
 $devices = array('YOUR REGISTERED DEVICE ID');

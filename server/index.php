@@ -1,7 +1,10 @@
 include "credentials.php";
 include "GCMPushMessage.php";
-$devices = array('YOUR REGISTERED DEVICE ID');
-$message = "The message to send";
+
+$device = array($_GET["registered_id"]);
+$message = $_GET["message"];
+
+if (!device || ! $message) return;
 
 $gcpm = new GCMPushMessage($apiKey);
 $gcpm->setDevices($devices);

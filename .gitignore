@@ -7,3 +7,5 @@
 /build
 server/credentials.php
 .idea
+.apk
+nohup.out

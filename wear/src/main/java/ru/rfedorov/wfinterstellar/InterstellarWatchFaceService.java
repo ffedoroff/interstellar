@@ -195,6 +195,10 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
         Bitmap mArrowSecBitmap;
         Bitmap mArrowMinBitmap;
         Bitmap mArrowHourBitmap;
+
+        Bitmap mArrowSecScaledBitmap;
+        Bitmap mArrowMinScaledBitmap;
+        Bitmap mArrowHourScaledBitmap;
         Bitmap mBackgroundScaledBitmap;
         private boolean normalMode;
         private int prevSec = 0;
@@ -326,17 +330,17 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
                     || mBackgroundScaledBitmap.getHeight() != height) {
                 mBackgroundScaledBitmap = Bitmap.createScaledBitmap(mBackgroundBitmap,
                         width, height, true /* filter */);
+                float d = (float)mBackgroundBitmap.getWidth() / (float)width;
+                mArrowHourScaledBitmap = Bitmap.createScaledBitmap(mArrowHourBitmap,
+                        (int)((float)mArrowHourBitmap.getWidth() / d), mBackgroundScaledBitmap.getHeight(), true);
+                mArrowMinScaledBitmap = Bitmap.createScaledBitmap(mArrowMinBitmap,
+                        (int)((float)mArrowMinBitmap.getWidth() / d), mBackgroundScaledBitmap.getHeight(), true);
+                mArrowSecScaledBitmap = Bitmap.createScaledBitmap(mArrowSecBitmap,
+                        (int)((float)mArrowSecBitmap.getWidth() / d), mBackgroundScaledBitmap.getHeight(), true);
+
             }
+
             canvas.drawBitmap(mBackgroundScaledBitmap, 0, 0, null);
-
-            float d = (float)mBackgroundBitmap.getWidth() / (float)width;
-
-//            mArrowHourBitmap = Bitmap.createScaledBitmap(mArrowHourBitmap,
-//                    (int)((float)mArrowHourBitmap.getWidth() / d), mBackgroundScaledBitmap.getHeight(), true);
-//            mArrowMinBitmap = Bitmap.createScaledBitmap(mArrowMinBitmap,
-//                    (int)((float)mArrowMinBitmap.getWidth() / d), mBackgroundScaledBitmap.getHeight(), true);
-//            mArrowSecBitmap = Bitmap.createScaledBitmap(mArrowSecBitmap,
-//                    (int)((float)mArrowSecBitmap.getWidth() / d), mBackgroundScaledBitmap.getHeight(), true);
 
             // Find the center. Ignore the window insets so that, on round watches with a
             // "chin", the watch face is centered on the entire screen, not just the usable

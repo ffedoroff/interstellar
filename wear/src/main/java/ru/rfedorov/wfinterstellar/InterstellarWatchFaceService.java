@@ -324,6 +324,15 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
             }
             canvas.drawBitmap(mBackgroundScaledBitmap, 0, 0, null);
 
+            float d = (float)mBackgroundBitmap.getWidth() / (float)mBackgroundScaledBitmap.getWidth();
+
+            mArrowHourBitmap = Bitmap.createScaledBitmap(mArrowHourBitmap,
+                    (int)((float)mArrowHourBitmap.getWidth() / d), mBackgroundScaledBitmap.getHeight(), true);
+            mArrowMinBitmap = Bitmap.createScaledBitmap(mArrowMinBitmap,
+                    (int)((float)mArrowMinBitmap.getWidth() / d), mBackgroundScaledBitmap.getHeight(), true);
+            mArrowSecBitmap = Bitmap.createScaledBitmap(mArrowSecBitmap,
+                    (int)((float)mArrowSecBitmap.getWidth() / d), mBackgroundScaledBitmap.getHeight(), true);
+
             // Find the center. Ignore the window insets so that, on round watches with a
             // "chin", the watch face is centered on the entire screen, not just the usable
             // portion.

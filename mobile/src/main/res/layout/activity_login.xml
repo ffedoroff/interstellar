@@ -11,60 +11,57 @@
         android:layout_width="wrap_content" android:layout_height="wrap_content"
         android:layout_marginBottom="8dp" android:visibility="gone" />
 
-    <ScrollView android:id="@+id/login_form" android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:orientation="vertical">
+    <!--<ScrollView android:id="@+id/login_form"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:visibility="invisible"-->
+        <!-->-->
+        <!--<LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"-->
+            <!--android:orientation="vertical">-->
 
-            <com.google.android.gms.common.SignInButton android:id="@+id/plus_sign_in_button"
-                android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:layout_marginBottom="64dp" />
-
-            <LinearLayout android:id="@+id/plus_sign_out_buttons"
-                android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:visibility="gone" android:weightSum="2"
-                android:layout_marginBottom="64dp">
-
-                <Button android:id="@+id/plus_sign_out_button" style="?android:textAppearanceSmall"
-                    android:layout_width="match_parent" android:layout_height="match_parent"
-                    android:layout_weight="1" android:text="@string/plus_sign_out" />
-
-                <Button android:id="@+id/plus_disconnect_button"
-                    style="?android:textAppearanceSmall" android:layout_width="match_parent"
-                    android:layout_height="match_parent" android:layout_weight="1"
-                    android:text="@string/plus_disconnect" />
-
-            </LinearLayout>
-
-            <!--<CheckBoxPreference-->
-                <!--android:key="example_checkbox"-->
-                <!--android:title="ttt"-->
-                <!--android:summary="summary"-->
-                <!--android:defaultValue="true" />-->
-
-            <!-- NOTE: EditTextPreference accepts EditText attributes. -->
-            <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
-            <!--<EditTextPreference-->
-                <!--android:key="example_text"-->
-                <!--android:title="title"-->
-                <!--android:defaultValue="defaultValue"-->
-                <!--android:selectAllOnFocus="true"-->
-                <!--android:inputType="textCapWords"-->
-                <!--android:capitalize="words"-->
-                <!--android:singleLine="true"-->
-                <!--android:maxLines="1" />-->
-
-            <ToggleButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/mToggleServer"
-                />
-            <!--<Button-->
+            <!--<com.google.android.gms.common.SignInButton android:id="@+id/plus_sign_in_button"-->
                 <!--android:layout_width="match_parent" android:layout_height="wrap_content"-->
-                <!--android:layout_marginBottom="32dp"-->
-                <!--android:text="@string/refresh"-->
-                <!--android:nestedScrollingEnabled="false" />-->
+                <!--android:layout_marginBottom="64dp"-->
+                <!--android:visibility="invisible"-->
+                <!--/>-->
 
+            <!--<LinearLayout android:id="@+id/plus_sign_out_buttons"-->
+                <!--android:layout_width="match_parent" android:layout_height="wrap_content"-->
+                <!--android:visibility="gone" android:weightSum="2"-->
+                <!--android:layout_marginBottom="64dp">-->
+
+                <!--<Button android:id="@+id/plus_sign_out_button" style="?android:textAppearanceSmall"-->
+                    <!--android:layout_width="match_parent" android:layout_height="match_parent"-->
+                    <!--android:layout_weight="1" android:text="@string/plus_sign_out" />-->
+
+                <!--<Button android:id="@+id/plus_disconnect_button"-->
+                    <!--style="?android:textAppearanceSmall" android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent" android:layout_weight="1"-->
+                    <!--android:text="@string/plus_disconnect" />-->
+
+            <!--</LinearLayout>-->
+
+            <!--<ToggleButton-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:id="@+id/mToggleServer"-->
+                <!--android:visibility="invisible"-->
+                <!--android:textOff="press to send"-->
+                <!--android:textOn="press to stop"-->
+                <!--/>-->
+
+
+
+        <!--</LinearLayout>-->
+    <!--</ScrollView>-->
+
+    <ScrollView
+        android:id="@+id/login_form2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical">
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -72,17 +69,11 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:id="@+id/morse" />
 
-            <ToggleButton
+            <Switch
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/mToggle"
                 />
-
         </LinearLayout>
     </ScrollView>
-
-
 </LinearLayout>
-
-
-

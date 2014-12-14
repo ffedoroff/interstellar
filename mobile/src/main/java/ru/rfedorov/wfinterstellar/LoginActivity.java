@@ -26,6 +26,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -48,7 +49,7 @@ public class LoginActivity extends PlusBaseActivity {
     private SignInButton mPlusSignInButton;
     private View mSignOutButtons;
     private View mLoginFormView;
-    private ToggleButton mToggleWearNotifier;
+    private Switch mToggleWearNotifier;
     private ToggleButton mToggleButtonServer;
     private EditText mMorse;
 
@@ -59,37 +60,37 @@ public class LoginActivity extends PlusBaseActivity {
         setContentView(R.layout.activity_login);
 
         // Find the Google+ sign in button.
-        mPlusSignInButton = (SignInButton) findViewById(R.id.plus_sign_in_button);
-        if (supportsGooglePlayServices()) {
-            // Set a listener to connect the user when the G+ button is clicked.
-            mPlusSignInButton.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    signIn();
-                }
-            });
-        } else {
-            // Don't offer G+ sign in if the app's version is too low to support Google Play
-            // Services.
-            mPlusSignInButton.setVisibility(View.GONE);
-            return;
-        }
+//        mPlusSignInButton = (SignInButton) findViewById(R.id.plus_sign_in_button);
+//        if (supportsGooglePlayServices()) {
+//            // Set a listener to connect the user when the G+ button is clicked.
+//            mPlusSignInButton.setOnClickListener(new OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    signIn();
+//                }
+//            });
+//        } else {
+//            // Don't offer G+ sign in if the app's version is too low to support Google Play
+//            // Services.
+//            mPlusSignInButton.setVisibility(View.GONE);
+//            return;
+//        }
 
-        mLoginFormView = findViewById(R.id.login_form);
+//        mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-        mSignOutButtons = findViewById(R.id.plus_sign_out_buttons);
+//        mSignOutButtons = findViewById(R.id.plus_sign_out_buttons);
         mMorse = (EditText)findViewById(R.id.morse);
 
-        mToggleButtonServer = (ToggleButton)findViewById(R.id.mToggleServer);
-        mToggleButtonServer.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Controller.getInstance().ServerEnabled = !Controller.getInstance().ServerEnabled;
-                Controller.getInstance().onModelChanged();
-            }
-        });
+//        mToggleButtonServer = (ToggleButton)findViewById(R.id.mToggleServer);
+//        mToggleButtonServer.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                Controller.getInstance().ServerEnabled = !Controller.getInstance().ServerEnabled;
+//                Controller.getInstance().onModelChanged();
+//            }
+//        });
 
-        mToggleWearNotifier = (ToggleButton)findViewById(R.id.mToggle);
+        mToggleWearNotifier = (Switch)findViewById(R.id.mToggle);
         mToggleWearNotifier.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -102,7 +103,7 @@ public class LoginActivity extends PlusBaseActivity {
 
     public void reCreateUnits() {
         mMorse.setText(Controller.getInstance().getModel().getMessage());
-        mToggleButtonServer.setChecked(Controller.getInstance().ServerEnabled);
+//        mToggleButtonServer.setChecked(Controller.getInstance().ServerEnabled);
         mToggleWearNotifier.setChecked(Controller.getInstance().getModel().getEnabled());
         Log.v(TAG, "reCreateUnits enabled="+Controller.getInstance().getModel().getEnabled());
     }
@@ -146,20 +147,20 @@ public class LoginActivity extends PlusBaseActivity {
     @Override
     protected void onPlusClientSignIn() {
         //Set up sign out and disconnect buttons.
-        Button signOutButton = (Button) findViewById(R.id.plus_sign_out_button);
-        signOutButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                signOut();
-            }
-        });
-        Button disconnectButton = (Button) findViewById(R.id.plus_disconnect_button);
-        disconnectButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                revokeAccess();
-            }
-        });
+//        Button signOutButton = (Button) findViewById(R.id.plus_sign_out_button);
+//        signOutButton.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                signOut();
+//            }
+//        });
+//        Button disconnectButton = (Button) findViewById(R.id.plus_disconnect_button);
+//        disconnectButton.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                revokeAccess();
+//            }
+//        });
     }
 
     @Override

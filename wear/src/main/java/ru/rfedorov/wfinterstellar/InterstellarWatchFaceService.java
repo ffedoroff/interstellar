@@ -150,6 +150,7 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
         Paint mMinutePaint;
         Paint mSecondPaint;
         Paint mTickPaint;
+        Paint mPaint;
         boolean mMute;
         Time mTime;
 
@@ -210,7 +211,7 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
             Resources resources = InterstellarWatchFaceService.this.getResources();
             Drawable backgroundDrawable = resources.getDrawable(R.drawable.bg_watch);
             mBackgroundBitmap = ((BitmapDrawable) backgroundDrawable).getBitmap();
-            Drawable arrowDrawable = resources.getDrawable(R.drawable.sec);
+            Drawable arrowDrawable = resources.getDrawable(R.drawable.sec1);
             mArrowSecBitmap = ((BitmapDrawable) arrowDrawable).getBitmap();
 
 
@@ -236,6 +237,10 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
             mTickPaint.setARGB(100, 255, 255, 255);
             mTickPaint.setStrokeWidth(2.f);
             mTickPaint.setAntiAlias(true);
+
+            mPaint = new Paint();
+            mPaint.setAntiAlias(true);
+            mPaint.setFilterBitmap(true);
 
             mTime = new Time();
         }
@@ -348,11 +353,17 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
             float minLength = centerX - 40;
             float hrLength = centerX - 80;
 
-            if (!isInAmbientMode()) {
-                float secX = (float) Math.sin(secRot) * secLength;
-                float secY = (float) -Math.cos(secRot) * secLength;
-                canvas.drawLine(centerX, centerY, centerX + secX, centerY + secY, mSecondPaint);
-            }
+//            if (!isInAmbientMode()) {
+//                float secX = (float) Math.sin(secRot) * secLength;
+//                float secY = (float) -Math.cos(secRot) * secLength;
+//                canvas.drawLine(centerX, centerY, centerX + secX, centerY + secY, mSecondPaint);
+//            }
+
+            Matrix m = new Matrix();
+
+            m.postRotate(360 / 60 * second, mArrowSecBitmap.getWidth()/2, mArrowSecBitmap.getHeight()/2);
+            m.postTranslate(centerX - mArrowSecBitmap.getWidth()/2, 0);
+            canvas.drawBitmap(mArrowSecBitmap, m, mPaint);
 
             float minX = (float) Math.sin(minRot) * minLength;
             float minY = (float) -Math.cos(minRot) * minLength;
@@ -361,6 +372,7 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
             float hrX = (float) Math.sin(hrRot) * hrLength;
             float hrY = (float) -Math.cos(hrRot) * hrLength;
             canvas.drawLine(centerX, centerY, centerX + hrX, centerY + hrY, mHourPaint);
+
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {

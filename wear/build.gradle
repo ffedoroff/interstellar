@@ -7,14 +7,14 @@ android {
 
     defaultConfig {
         applicationId "ru.rfedorov.interstellar"
-        minSdkVersion 20
+        minSdkVersion 21
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
     }
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -22,6 +22,6 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.google.android.support:wearable:1.0.0'
+    compile 'com.google.android.support:wearable:1.1.+'
     compile 'com.google.android.gms:play-services-wearable:6.1.71'
 }

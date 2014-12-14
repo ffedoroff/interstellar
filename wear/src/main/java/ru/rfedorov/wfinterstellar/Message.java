@@ -20,6 +20,9 @@ public class Message {
     private int index = 0;
 
     public void setMessage(String word){
+        if (messageExist()){
+            wordCode.clear();
+        }
         word += " ";
         for(int i = 0; i < word.length(); i++){
             Character character = word.charAt(i);
@@ -72,6 +75,10 @@ public class Message {
             index = 0;
         }
         return sec;
+    }
+
+    public void stopMessage(){
+        wordCode.clear();
     }
 
 }

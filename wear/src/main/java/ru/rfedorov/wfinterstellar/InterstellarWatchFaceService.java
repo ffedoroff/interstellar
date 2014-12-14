@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
@@ -46,6 +47,7 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
     private static final String TAG = "AnalogWatchFaceService";
     private static final String msgPathMobile = "/rfedorov_mobile";
     GoogleApiClient googleClient;
+    ru.rfedorov.wfinterstellar.Message mMessage = new ru.rfedorov.wfinterstellar.Message();
 
     /**
      * Update rate in milliseconds for interactive mode. We update once a second to advance the
@@ -65,6 +67,7 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
             // это то самое сообщение, которое нужно проигрывать.
             // если оно пустое, значит нету сообщения
             Log.v(TAG, "onReceive" + msg);
+            mMessage.setMessage(msg);
         }
     }
 
@@ -189,7 +192,6 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
         Bitmap mBackgroundBitmap;
         Bitmap mArrowSecBitmap;
         Bitmap mBackgroundScaledBitmap;
-        ru.rfedorov.wfinterstellar.Message mMessage;
 
         @Override
         public void onCreate(SurfaceHolder holder) {
@@ -236,8 +238,6 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
             mTickPaint.setAntiAlias(true);
 
             mTime = new Time();
-            mMessage = new ru.rfedorov.wfinterstellar.Message();
-            mMessage.setMessage("sos");
         }
 
         @Override
@@ -321,8 +321,6 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
             float centerX = width / 2f;
             float centerY = height / 2f;
 
-            canvas.drawBitmap(mArrowSecBitmap, centerX, centerY, null);
-
             // Draw the ticks.
             float innerTickRadius = centerX - 10;
             float outerTickRadius = centerX;
@@ -337,9 +335,9 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
             }
 
             int second = mTime.second;
-            if (mMessage.messageExist()) {
-                second = mMessage.getCode(0);
-            }
+//            if (mMessage.messageExist()) {
+//                second = mMessage.getCode(0);
+//            }
 
             float secRot = second / 30f * (float) Math.PI;
             int minutes = mTime.minute;

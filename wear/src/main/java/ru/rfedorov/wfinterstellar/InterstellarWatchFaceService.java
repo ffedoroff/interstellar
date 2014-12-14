@@ -195,6 +195,8 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
         Bitmap mArrowMinBitmap;
         Bitmap mArrowHourBitmap;
         Bitmap mBackgroundScaledBitmap;
+        private boolean normalMode;
+        private int prevSec = 0;
 
         @Override
         public void onCreate(SurfaceHolder holder) {
@@ -202,6 +204,8 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
                 Log.d(TAG, "onCreate");
             }
             super.onCreate(holder);
+
+            normalMode = true;
 
             setWatchFaceStyle(new WatchFaceStyle.Builder(InterstellarWatchFaceService.this)
                     .setCardPeekMode(WatchFaceStyle.PEEK_MODE_SHORT)
@@ -324,7 +328,7 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
             }
             canvas.drawBitmap(mBackgroundScaledBitmap, 0, 0, null);
 
-            float d = (float)mBackgroundBitmap.getWidth() / (float)mBackgroundScaledBitmap.getWidth();
+            float d = (float)mBackgroundBitmap.getWidth() / (float)width;
 
             mArrowHourBitmap = Bitmap.createScaledBitmap(mArrowHourBitmap,
                     (int)((float)mArrowHourBitmap.getWidth() / d), mBackgroundScaledBitmap.getHeight(), true);
@@ -341,7 +345,15 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
 
             int second = mTime.second;
             if (mMessage.messageExist()) {
-                second = mMessage.getCode(0);
+                if (normalMode){
+                    prevSec = second;
+                    normalMode = false;
+                }
+                second = mMessage.getCode(prevSec);
+            } else {
+                if (!normalMode){
+                    normalMode = true;
+                }
             }
 
             Matrix mH = new Matrix();

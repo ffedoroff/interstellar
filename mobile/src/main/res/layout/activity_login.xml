@@ -36,17 +36,29 @@
 
             </LinearLayout>
 
-            <Button
-                android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:layout_marginBottom="32dp"
-                android:text="@string/refresh"
+            <ToggleButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/mToggleServer"
                 />
+            <!--<Button-->
+                <!--android:layout_width="match_parent" android:layout_height="wrap_content"-->
+                <!--android:layout_marginBottom="32dp"-->
+                <!--android:text="@string/refresh"-->
+                <!--android:nestedScrollingEnabled="false" />-->
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/morse"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/morse" />
 
             <ToggleButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/refresh"
-                android:id="@+id/toggleButton" />
+                android:id="@+id/mToggle"
+                />
 
         </LinearLayout>
     </ScrollView>

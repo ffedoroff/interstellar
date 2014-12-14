@@ -13,10 +13,12 @@ public class InterstellarApplication extends Application {
         Log.v(TAG, "RFApplication onCreate");
         super.onCreate();
         InterstellarApplication.context = getApplicationContext();
-        //Controller.getInstance();
+        Controller.getInstance();
     }
 
     public static Context getAppContext() {
         return InterstellarApplication.context;
     }
+
+
 }

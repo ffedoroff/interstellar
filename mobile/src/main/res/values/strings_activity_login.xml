@@ -2,6 +2,7 @@
 
     <string name="demo">demo</string>
     <string name="refresh">refresh</string>
+    <string name="morse">sos</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>

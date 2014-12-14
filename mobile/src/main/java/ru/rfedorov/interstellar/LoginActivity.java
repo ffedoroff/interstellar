@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,8 +24,10 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -38,16 +41,21 @@ import java.util.List;
  * A login screen that offers login via Google+ sign in.
  */
 public class LoginActivity extends PlusBaseActivity {
+    private static final String TAG = "LoginActivity";
 
     // UI references.
     private View mProgressView;
     private SignInButton mPlusSignInButton;
     private View mSignOutButtons;
     private View mLoginFormView;
+    private ToggleButton mToggleWearNotifier;
+    private ToggleButton mToggleButtonServer;
+    private EditText mMorse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Controller.getInstance().mainActivity = this;
         setContentView(R.layout.activity_login);
 
         // Find the Google+ sign in button.
@@ -70,6 +78,33 @@ public class LoginActivity extends PlusBaseActivity {
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
         mSignOutButtons = findViewById(R.id.plus_sign_out_buttons);
+        mMorse = (EditText)findViewById(R.id.morse);
+
+        mToggleButtonServer = (ToggleButton)findViewById(R.id.mToggleServer);
+        mToggleButtonServer.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Controller.getInstance().ServerEnabled = !Controller.getInstance().ServerEnabled;
+                Controller.getInstance().onModelChanged();
+            }
+        });
+
+        mToggleWearNotifier = (ToggleButton)findViewById(R.id.mToggle);
+        mToggleWearNotifier.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Controller.getInstance().getModel().setMessage(mMorse.getText().toString());
+                Controller.getInstance().getModel().setEnabled(mToggleWearNotifier.isChecked());
+                Controller.getInstance().onModelChanged();
+            }
+        });
+    }
+
+    public void reCreateUnits() {
+        mMorse.setText(Controller.getInstance().getModel().getMessage());
+        mToggleButtonServer.setChecked(Controller.getInstance().ServerEnabled);
+        mToggleWearNotifier.setChecked(Controller.getInstance().getModel().getEnabled());
+        Log.v(TAG, "reCreateUnits enabled="+Controller.getInstance().getModel().getEnabled());
     }
 
     /**

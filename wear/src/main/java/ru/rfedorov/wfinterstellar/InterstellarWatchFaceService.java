@@ -19,7 +19,9 @@ import android.support.wearable.watchface.WatchFaceService;
 import android.support.wearable.watchface.WatchFaceStyle;
 import android.text.format.Time;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.SurfaceHolder;
+import android.view.View;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -165,6 +167,7 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
         boolean mLowBitAmbient;
 
         Bitmap mBackgroundBitmap;
+        Bitmap mArrowSecBitmap;
         Bitmap mBackgroundScaledBitmap;
         ru.rfedorov.wfinterstellar.Message mMessage;
 
@@ -177,13 +180,17 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
 
             setWatchFaceStyle(new WatchFaceStyle.Builder(InterstellarWatchFaceService.this)
                     .setCardPeekMode(WatchFaceStyle.PEEK_MODE_SHORT)
-                    .setBackgroundVisibility(WatchFaceStyle.BACKGROUND_VISIBILITY_INTERRUPTIVE)
+                    .setBackgroundVisibility(WatchFaceStyle.BACKGROUND_VISIBILITY_PERSISTENT)
                     .setShowSystemUiTime(false)
+                    .setStatusBarGravity(Gravity.CENTER)
                     .build());
 
             Resources resources = InterstellarWatchFaceService.this.getResources();
             Drawable backgroundDrawable = resources.getDrawable(R.drawable.bg_watch);
             mBackgroundBitmap = ((BitmapDrawable) backgroundDrawable).getBitmap();
+            Drawable arrowDrawable = resources.getDrawable(R.drawable.sec);
+            mArrowSecBitmap = ((BitmapDrawable) arrowDrawable).getBitmap();
+
 
             mHourPaint = new Paint();
             mHourPaint.setARGB(255, 200, 200, 200);
@@ -286,11 +293,15 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
             }
             canvas.drawBitmap(mBackgroundScaledBitmap, 0, 0, null);
 
+
+
             // Find the center. Ignore the window insets so that, on round watches with a
             // "chin", the watch face is centered on the entire screen, not just the usable
             // portion.
             float centerX = width / 2f;
             float centerY = height / 2f;
+
+            canvas.drawBitmap(mArrowSecBitmap, centerX, centerY, null);
 
             // Draw the ticks.
             float innerTickRadius = centerX - 10;

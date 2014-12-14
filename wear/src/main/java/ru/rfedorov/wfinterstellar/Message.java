@@ -20,6 +20,7 @@ public class Message {
     private int index = 0;
 
     public void setMessage(String word){
+        word += " ";
         for(int i = 0; i < word.length(); i++){
             Character character = word.charAt(i);
             for (int j = 0 ; j < alpha.length; j++){

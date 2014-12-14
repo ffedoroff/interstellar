@@ -9,6 +9,7 @@ import android.content.ContentResolver;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 
@@ -49,8 +50,9 @@ public class LoginActivity extends PlusBaseActivity {
     private SignInButton mPlusSignInButton;
     private View mSignOutButtons;
     private View mLoginFormView;
-    private Switch mToggleWearNotifier;
-    private ToggleButton mToggleButtonServer;
+//    private Switch mToggleWearNotifier;
+    private Button mToggleWearNotifier;
+//    private ToggleButton mToggleButtonServer;
     private EditText mMorse;
 
     @Override
@@ -90,22 +92,39 @@ public class LoginActivity extends PlusBaseActivity {
 //            }
 //        });
 
-        mToggleWearNotifier = (Switch)findViewById(R.id.mToggle);
-        mToggleWearNotifier.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        mToggleWearNotifier = (Button)findViewById(R.id.mToggle);
+        mToggleWearNotifier.setOnClickListener(new OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onClick(View v) {
                 Controller.getInstance().getModel().setMessage(mMorse.getText().toString());
-                Controller.getInstance().getModel().setEnabled(mToggleWearNotifier.isChecked());
+                Controller.getInstance().getModel().setEnabled(!Controller.getInstance().getModel().getEnabled());
                 Controller.getInstance().onModelChanged();
             }
         });
+
+//        mToggleWearNotifier.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                Controller.getInstance().getModel().setMessage(mMorse.getText().toString());
+//                Controller.getInstance().getModel().setEnabled(mToggleWearNotifier.isChecked());
+//                Controller.getInstance().onModelChanged();
+//            }
+//        });
+        reCreateUnits();
     }
 
     public void reCreateUnits() {
         mMorse.setText(Controller.getInstance().getModel().getMessage());
 //        mToggleButtonServer.setChecked(Controller.getInstance().ServerEnabled);
-        mToggleWearNotifier.setChecked(Controller.getInstance().getModel().getEnabled());
-        Log.v(TAG, "reCreateUnits enabled="+Controller.getInstance().getModel().getEnabled());
+//        mToggleWearNotifier.setChecked(Controller.getInstance().getModel().getEnabled());
+        if (Controller.getInstance().getModel().getEnabled() == true) {
+            mToggleWearNotifier.setBackgroundColor(Color.parseColor("#F44336"));
+            mToggleWearNotifier.setText("STOP");
+        } else {
+            mToggleWearNotifier.setBackgroundColor(Color.parseColor("#2196f3"));
+            mToggleWearNotifier.setText("Send Message");
+        }
+        Log.v(TAG, "reCreateUnits enabled=" + Controller.getInstance().getModel().getEnabled());
     }
 
     /**

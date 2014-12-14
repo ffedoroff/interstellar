@@ -362,19 +362,19 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
             }
 
             Matrix mH = new Matrix();
-            mH.postRotate(360 / 60 * mTime.hour, mArrowHourBitmap.getWidth()/2, mArrowHourBitmap.getHeight()/2);
-            mH.postTranslate(centerX - mArrowHourBitmap.getWidth()/2, 0);
-            canvas.drawBitmap(mArrowHourBitmap, mH, mPaint);
+            mH.postRotate(360 / 60 * mTime.hour, mArrowHourScaledBitmap.getWidth()/2, mArrowHourScaledBitmap.getHeight()/2);
+            mH.postTranslate(centerX - mArrowHourScaledBitmap.getWidth()/2, 0);
+            canvas.drawBitmap(mArrowHourScaledBitmap, mH, mPaint);
 
             Matrix mM = new Matrix();
-            mM.postRotate(360 / 60 * mTime.minute, mArrowMinBitmap.getWidth()/2, mArrowMinBitmap.getHeight()/2);
-            mM.postTranslate(centerX - mArrowMinBitmap.getWidth()/2, 0);
-            canvas.drawBitmap(mArrowMinBitmap, mM, mPaint);
+            mM.postRotate(360 / 60 * mTime.minute, mArrowMinScaledBitmap.getWidth()/2, mArrowMinScaledBitmap.getHeight()/2);
+            mM.postTranslate(centerX - mArrowMinScaledBitmap.getWidth()/2, 0);
+            canvas.drawBitmap(mArrowMinScaledBitmap, mM, mPaint);
 
             Matrix mS = new Matrix();
-            mS.postRotate(360 / 60 * second, mArrowSecBitmap.getWidth()/2, mArrowSecBitmap.getHeight()/2);
-            mS.postTranslate(centerX - mArrowSecBitmap.getWidth()/2, 0);
-            canvas.drawBitmap(mArrowSecBitmap, mS, mPaint);
+            mS.postRotate(360 / 60 * second, mArrowSecScaledBitmap.getWidth()/2, mArrowSecScaledBitmap.getHeight()/2);
+            mS.postTranslate(centerX - mArrowSecScaledBitmap.getWidth()/2, 0);
+            canvas.drawBitmap(mArrowSecScaledBitmap, mS, mPaint);
 
 //            float minX = (float) Math.sin(minRot) * minLength;
 //            float minY = (float) -Math.cos(minRot) * minLength;

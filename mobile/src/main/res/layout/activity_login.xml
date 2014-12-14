@@ -67,7 +67,9 @@
                 android:layout_height="wrap_content"
                 android:text="@string/morse"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:id="@+id/morse" />
+                android:id="@+id/morse"
+                android:hint="message to send"
+                />
 
 
 

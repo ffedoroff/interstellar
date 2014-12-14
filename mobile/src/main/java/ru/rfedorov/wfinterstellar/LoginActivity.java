@@ -117,7 +117,7 @@ public class LoginActivity extends PlusBaseActivity {
         mMorse.setText(Controller.getInstance().getModel().getMessage());
 //        mToggleButtonServer.setChecked(Controller.getInstance().ServerEnabled);
 //        mToggleWearNotifier.setChecked(Controller.getInstance().getModel().getEnabled());
-        if (Controller.getInstance().getModel().getEnabled() == true) {
+        if (Controller.getInstance().getModel().getEnabled()) {
             mToggleWearNotifier.setBackgroundColor(Color.parseColor("#F44336"));
             mToggleWearNotifier.setText("STOP");
         } else {

@@ -14,6 +14,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.wearable.watchface.CanvasWatchFaceService;
 import android.support.wearable.watchface.WatchFaceService;
 import android.support.wearable.watchface.WatchFaceStyle;
@@ -50,15 +51,17 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
      */
     private static final long INTERACTIVE_UPDATE_RATE_MS = TimeUnit.SECONDS.toMillis(1);
 
-//    private void sendInitMessage() {
-//        Log.v(TAG, "sendInitMessage");
-//        new SendToDataLayerThread("init").start();
-//    }
+    private void sendInitMessage() {
+        Log.v(TAG, "sendInitMessage");
+        new SendToDataLayerThread("init").start();
+    }
 
     public class MessageReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             String msg = intent.getStringExtra("message");
+            // это то самое сообщение, которое нужно проигрывать.
+            // если оно пустое, значит нету сообщения
             Log.v(TAG, "onReceive" + msg);
         }
     }
@@ -67,7 +70,7 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
     @Override
     public void onConnected(Bundle connectionHint) {
         Log.v(TAG, "onConnected");
-        //sendInitMessage();
+        sendInitMessage();
     }
 
 //    // Disconnect from the data layer when the Activity stops
@@ -115,7 +118,24 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
 
     @Override
     public Engine onCreateEngine() {
+        Log.v(TAG, "onCreateEngine");
+
+        // Build a new GoogleApiClient
+        googleClient = new GoogleApiClient.Builder(this)
+                .addApi(Wearable.API)
+                .build();
+        googleClient.connect();
+
+        // Register the local broadcast receiver, defined in step 3.
+        IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
+        MessageReceiver messageReceiver = new MessageReceiver();
+        LocalBroadcastManager.getInstance(this).registerReceiver(messageReceiver, messageFilter);
+
+        sendInitMessage();
+
         return new Engine();
+
+
     }
 
     private class Engine extends CanvasWatchFaceService.Engine {

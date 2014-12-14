@@ -272,7 +272,7 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
 
         @Override
         public void onDraw(Canvas canvas, Rect bounds) {
-            Log.d(TAG, "Test");
+            //Log.d(TAG, "Test");
             mTime.setToNow();
 
             int width = bounds.width();

@@ -69,11 +69,23 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:id="@+id/morse" />
 
-            <Switch
+
+
+            <!--<Switch-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:id="@+id/mToggle"-->
+                <!--/>-->
+            <!--android:layout_height="300dp"-->
+
+            <Button
+                android:id="@+id/mToggle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/mToggle"
+
+                android:textColor="#FFFFFF"
                 />
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

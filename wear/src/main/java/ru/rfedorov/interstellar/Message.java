@@ -8,12 +8,12 @@ public class Message {
     Character[] alpha = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
             'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
             'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8',
-            '9', '0'};
+            '9', '0', ' '};
     String[] dottie = { ".-", "-...", "-.-.", "-..", ".", "..-.", "--.",
             "....", "..", ".---", "-.-", ".-..", "--", "-.", "---", ".--.",
             "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-",
             "-.--", "--..", ".----", "..---", "...--", "....-", ".....",
-            "-....", "--...", "---..", "----.", "-----"};
+            "-....", "--...", "---..", "----.", "-----", " "};
 
 
     private ArrayList<Boolean> wordCode = new ArrayList<>();
@@ -30,6 +30,7 @@ public class Message {
                 }
             }
             wordCode.add(false);
+            wordCode.add(false);
         }
     }
 
@@ -42,6 +43,14 @@ public class Message {
             }else if (c.equals('-')){
                 res.add(true);
                 res.add(true);
+                res.add(true);
+            }else if (c.equals(' ')){
+                res.add(false);
+                res.add(false);
+                res.add(false);
+                res.add(false);
+                res.add(false);
+                res.add(false);
             }
             res.add(false);
         }
@@ -58,7 +67,7 @@ public class Message {
         }
         index++;
         if (index >= wordCode.size() - 1){
-            wordCode.clear();
+//            wordCode.clear();
             index = 0;
         }
         return sec;

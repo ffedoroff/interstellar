@@ -199,7 +199,6 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService {
 
         @Override
         public void onDraw(Canvas canvas, Rect bounds) {
-            Log.d(TAG, "Test");
             mTime.setToNow();
 
             int width = bounds.width();
@@ -260,6 +259,12 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService {
             float hrX = (float) Math.sin(hrRot) * hrLength;
             float hrY = (float) -Math.cos(hrRot) * hrLength;
             canvas.drawLine(centerX, centerY, centerX + hrX, centerY + hrY, mHourPaint);
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            invalidate();
         }
 
         @Override

@@ -93,6 +93,7 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService {
 
         Bitmap mBackgroundBitmap;
         Bitmap mBackgroundScaledBitmap;
+        ru.rfedorov.interstellar.Message mMessage;
 
         @Override
         public void onCreate(SurfaceHolder holder) {
@@ -135,6 +136,8 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService {
             mTickPaint.setAntiAlias(true);
 
             mTime = new Time();
+            mMessage = new ru.rfedorov.interstellar.Message();
+            mMessage.setMessage("sos");
         }
 
         @Override
@@ -196,6 +199,7 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService {
 
         @Override
         public void onDraw(Canvas canvas, Rect bounds) {
+            Log.d(TAG, "Test");
             mTime.setToNow();
 
             int width = bounds.width();
@@ -229,7 +233,12 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService {
                         centerX + outerX, centerY + outerY, mTickPaint);
             }
 
-            float secRot = mTime.second / 30f * (float) Math.PI;
+            int second = mTime.second;
+            if (mMessage.messageExist()) {
+                second = mMessage.getCode(0);
+            }
+
+            float secRot = second / 30f * (float) Math.PI;
             int minutes = mTime.minute;
             float minRot = minutes / 30f * (float) Math.PI;
             float hrRot = ((mTime.hour + (minutes / 60f)) / 6f ) * (float) Math.PI;

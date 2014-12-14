@@ -335,9 +335,9 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
             }
 
             int second = mTime.second;
-//            if (mMessage.messageExist()) {
-//                second = mMessage.getCode(0);
-//            }
+            if (mMessage.messageExist()) {
+                second = mMessage.getCode(0);
+            }
 
             float secRot = second / 30f * (float) Math.PI;
             int minutes = mTime.minute;

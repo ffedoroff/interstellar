@@ -20,8 +20,14 @@ public class Message {
     private int index = 0;
 
     public void setMessage(String word){
+        if (word != null && !word.isEmpty()){
+            wordCode.clear();
+            index = 0;
+            return;
+        }
         if (messageExist()){
             wordCode.clear();
+            index = 0;
         }
         word += " ";
         for(int i = 0; i < word.length(); i++){

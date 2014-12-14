@@ -194,6 +194,10 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
         Bitmap mArrowSecBitmap;
         Bitmap mArrowMinBitmap;
         Bitmap mArrowHourBitmap;
+
+        Bitmap mArrowSecScaledBitmap;
+        Bitmap mArrowMinScaledBitmap;
+        Bitmap mArrowHourScaledBitmap;
         Bitmap mBackgroundScaledBitmap;
         private boolean normalMode;
         private int prevSec = 0;
@@ -325,17 +329,17 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
                     || mBackgroundScaledBitmap.getHeight() != height) {
                 mBackgroundScaledBitmap = Bitmap.createScaledBitmap(mBackgroundBitmap,
                         width, height, true /* filter */);
+                float d = (float)mBackgroundBitmap.getWidth() / (float)width;
+                mArrowHourScaledBitmap = Bitmap.createScaledBitmap(mArrowHourBitmap,
+                        (int)((float)mArrowHourBitmap.getWidth() / d), mBackgroundScaledBitmap.getHeight(), true);
+                mArrowMinScaledBitmap = Bitmap.createScaledBitmap(mArrowMinBitmap,
+                        (int)((float)mArrowMinBitmap.getWidth() / d), mBackgroundScaledBitmap.getHeight(), true);
+                mArrowSecScaledBitmap = Bitmap.createScaledBitmap(mArrowSecBitmap,
+                        (int)((float)mArrowSecBitmap.getWidth() / d), mBackgroundScaledBitmap.getHeight(), true);
+
             }
+
             canvas.drawBitmap(mBackgroundScaledBitmap, 0, 0, null);
-
-            float d = (float)mBackgroundBitmap.getWidth() / (float)width;
-
-            mArrowHourBitmap = Bitmap.createScaledBitmap(mArrowHourBitmap,
-                    (int)((float)mArrowHourBitmap.getWidth() / d), mBackgroundScaledBitmap.getHeight(), true);
-            mArrowMinBitmap = Bitmap.createScaledBitmap(mArrowMinBitmap,
-                    (int)((float)mArrowMinBitmap.getWidth() / d), mBackgroundScaledBitmap.getHeight(), true);
-            mArrowSecBitmap = Bitmap.createScaledBitmap(mArrowSecBitmap,
-                    (int)((float)mArrowSecBitmap.getWidth() / d), mBackgroundScaledBitmap.getHeight(), true);
 
             // Find the center. Ignore the window insets so that, on round watches with a
             // "chin", the watch face is centered on the entire screen, not just the usable
@@ -357,27 +361,22 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
             }
 
             Matrix mH = new Matrix();
-            mH.postRotate(360 / 60 * mTime.hour, mArrowHourBitmap.getWidth()/2, mArrowHourBitmap.getHeight()/2);
-            mH.postTranslate(centerX - mArrowHourBitmap.getWidth()/2, 0);
-            canvas.drawBitmap(mArrowHourBitmap, mH, mPaint);
+            mH.postRotate(360 / 60 * mTime.hour, mArrowHourScaledBitmap.getWidth()/2,
+                    mArrowHourScaledBitmap.getHeight()/2);
+            mH.postTranslate(centerX - mArrowHourScaledBitmap.getWidth()/2, 0);
+            canvas.drawBitmap(mArrowHourScaledBitmap, mH, mPaint);
 
             Matrix mM = new Matrix();
-            mM.postRotate(360 / 60 * mTime.minute, mArrowMinBitmap.getWidth()/2, mArrowMinBitmap.getHeight()/2);
-            mM.postTranslate(centerX - mArrowMinBitmap.getWidth()/2, 0);
-            canvas.drawBitmap(mArrowMinBitmap, mM, mPaint);
+            mM.postRotate(360 / 60 * mTime.minute, mArrowMinScaledBitmap.getWidth()/2,
+                    mArrowMinScaledBitmap.getHeight()/2);
+            mM.postTranslate(centerX - mArrowMinScaledBitmap.getWidth()/2, 0);
+            canvas.drawBitmap(mArrowMinScaledBitmap, mM, mPaint);
 
             Matrix mS = new Matrix();
-            mS.postRotate(360 / 60 * second, mArrowSecBitmap.getWidth()/2, mArrowSecBitmap.getHeight()/2);
-            mS.postTranslate(centerX - mArrowSecBitmap.getWidth()/2, 0);
-            canvas.drawBitmap(mArrowSecBitmap, mS, mPaint);
-
-//            float minX = (float) Math.sin(minRot) * minLength;
-//            float minY = (float) -Math.cos(minRot) * minLength;
-//            canvas.drawLine(centerX, centerY, centerX + minX, centerY + minY, mMinutePaint);
-//
-//            float hrX = (float) Math.sin(hrRot) * hrLength;
-//            float hrY = (float) -Math.cos(hrRot) * hrLength;
-//            canvas.drawLine(centerX, centerY, centerX + hrX, centerY + hrY, mHourPaint);
+            mS.postRotate(360 / 60 * second, mArrowSecScaledBitmap.getWidth()/2,
+                    mArrowSecScaledBitmap.getHeight()/2);
+            mS.postTranslate(centerX - mArrowSecScaledBitmap.getWidth()/2, 0);
+            canvas.drawBitmap(mArrowSecScaledBitmap, mS, mPaint);
 
             try {
                 Thread.sleep(100);

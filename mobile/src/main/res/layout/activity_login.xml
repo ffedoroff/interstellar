@@ -18,11 +18,12 @@
 
             <com.google.android.gms.common.SignInButton android:id="@+id/plus_sign_in_button"
                 android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:layout_marginBottom="32dp" />
+                android:layout_marginBottom="64dp" />
 
             <LinearLayout android:id="@+id/plus_sign_out_buttons"
                 android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:visibility="gone" android:weightSum="2">
+                android:visibility="gone" android:weightSum="2"
+                android:layout_marginBottom="64dp">
 
                 <Button android:id="@+id/plus_sign_out_button" style="?android:textAppearanceSmall"
                     android:layout_width="match_parent" android:layout_height="match_parent"
@@ -35,9 +36,21 @@
 
             </LinearLayout>
 
+            <Button
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                android:text="@string/refresh"
+                />
+
+            <ToggleButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/refresh"
+                android:id="@+id/toggleButton" />
 
         </LinearLayout>
     </ScrollView>
+
 
 </LinearLayout>
 

@@ -1,4 +1,4 @@
-package ru.rfedorov.interstellar;
+package ru.rfedorov.wfinterstellar;
 
 import java.util.AbstractMap;
 import java.util.TreeMap;

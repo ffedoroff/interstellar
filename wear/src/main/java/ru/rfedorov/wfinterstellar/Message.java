@@ -1,4 +1,4 @@
-package ru.rfedorov.interstellar;
+package ru.rfedorov.wfinterstellar;
 
 import java.util.ArrayList;
 import java.util.List;

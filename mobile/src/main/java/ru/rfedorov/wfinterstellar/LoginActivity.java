@@ -1,4 +1,4 @@
-package ru.rfedorov.interstellar;
+package ru.rfedorov.wfinterstellar;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;

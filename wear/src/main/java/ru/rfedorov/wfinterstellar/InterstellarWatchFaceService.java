@@ -1,4 +1,4 @@
-package ru.rfedorov.interstellar;
+package ru.rfedorov.wfinterstellar;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -50,25 +50,16 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
      */
     private static final long INTERACTIVE_UPDATE_RATE_MS = TimeUnit.SECONDS.toMillis(1);
 
-    private void sendInitMessage() {
-        Log.v(TAG, "sendInitMessage");
-        new SendToDataLayerThread("init").start();
-    }
+//    private void sendInitMessage() {
+//        Log.v(TAG, "sendInitMessage");
+//        new SendToDataLayerThread("init").start();
+//    }
 
     public class MessageReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             String msg = intent.getStringExtra("message");
-            String[] data = msg.split(",");
-            if (data.length > 1) {
-                if ("set-values".equals(data[0])) {
-//                    for (int i=1; i<Math.min(data.length, buttons.length+1); i++) {
-//                        buttons[i-1].setText(data[i]);
-//                        buttons[i-1].setBackgroundResource(R.drawable.bulb_off);
-//                        buttons[i-1].setTag(false);
-//                    }
-                }
-            }
+            Log.v(TAG, "onReceive" + msg);
         }
     }
 
@@ -76,17 +67,17 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
     @Override
     public void onConnected(Bundle connectionHint) {
         Log.v(TAG, "onConnected");
-        sendInitMessage();
+        //sendInitMessage();
     }
 
-    // Disconnect from the data layer when the Activity stops
+//    // Disconnect from the data layer when the Activity stops
 //    @Override
-    protected void onStop() {
-        if (null != googleClient && googleClient.isConnected()) {
-            googleClient.disconnect();
-        }
+//    protected void onStop() {
+//        if (null != googleClient && googleClient.isConnected()) {
+//            googleClient.disconnect();
+//        }
 //        super.onStop();
-    }
+//    }
 
     // Placeholders for required connection callbacks
     @Override
@@ -175,7 +166,7 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
 
         Bitmap mBackgroundBitmap;
         Bitmap mBackgroundScaledBitmap;
-        ru.rfedorov.interstellar.Message mMessage;
+        ru.rfedorov.wfinterstellar.Message mMessage;
 
         @Override
         public void onCreate(SurfaceHolder holder) {
@@ -218,7 +209,7 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
             mTickPaint.setAntiAlias(true);
 
             mTime = new Time();
-            mMessage = new ru.rfedorov.interstellar.Message();
+            mMessage = new ru.rfedorov.wfinterstellar.Message();
             mMessage.setMessage("sos");
         }
 

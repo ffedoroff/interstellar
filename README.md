@@ -5,17 +5,28 @@ interstellar
 
 ### Description
 
-На хакатоне #gdg #devfest 2014 #omsk сделали крутое приложение WatchFace для Android Wear, которое превращает ваши часы в часы героя из фильма Interstellar. Главной фишкой приложения является возможность посылать сообщение часам, которые отобразят его азбукой морзе при помощи секундной стрелки.
+This is WatchFace for Android Wear, which looks and interracts exactly like in the Interstellar movie. You able to play custom text messages using Morse code the same like in the movie.
 
 ### Requirements
 
-Google Wear Watch Face
+[Google Watch](http://www.android.com/wear/) with Android verson 5+
 
-Android
+[Android Phone](http://www.android.com/versions/kit-kat-4-4/) version 4.4+
 
 ### Download and Install
 
-К сожалению гугл дважды забанил наше приложение в Google Play и поэтому, мы вынуждены его выкладывать только через apk файлы
-Поэтому, просто скачайте и запустите у себя этот [apk файл](https://github.com/ffedoroff/interstellar/raw/master/mobile/wear-release.apk) на телефоне
+Unfortunatelly our app is not allowed in google play, because it use not original watch design. So you able to download and compile our app or just install that  [apk](https://github.com/ffedoroff/interstellar/raw/master/mobile/wear-release.apk)
 
 ### How to use
+
+On the phone app you able to send Morse message with custom text to your Watch.
+![GODOT](/design/screen1.png)
+
+If you want to stop Morse message playing on your watch just click that red button on your phone.
+![GODOT](/design/screen2.png)
+
+### About Us
+
+We build that app on google hackaton #gdg #devfest 2014 #omsk
+
+Main contributors is [Roman Fedorov](https://github.com/ffedoroff/) and [Konstantin Dravolin](https://github.com/kdravolin)

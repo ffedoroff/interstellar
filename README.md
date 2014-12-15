@@ -3,6 +3,8 @@ interstellar
 
 ## Interstellar Watch Face
 
+![GODOT](/design/res.png)
+
 ### Description
 
 This is WatchFace for Android Wear, which looks and interracts exactly like in the Interstellar movie. You able to play custom text messages using Morse code the same like in the movie.

@@ -7,17 +7,17 @@ interstellar
 
 ### Description
 
-This is WatchFace for Android Wear, which looks and interracts exactly like in the Interstellar movie. You able to play custom text messages using Morse code the same like in the movie.
+This is WatchFace for Android Wear, which looks and interacts exactly like in the Interstellar movie. You able to play custom text messages using Morse code the same like in the movie.
 
 ### Requirements
 
-[Google Watch](http://www.android.com/wear/) with Android verson 5+
+[Google Watch](http://www.android.com/wear/) with Android version 5+
 
 [Android Phone](http://www.android.com/versions/kit-kat-4-4/) version 4.4+
 
 ### Download and Install
 
-Unfortunatelly our app is not allowed in google play, because it use not original watch design. So you able to download and compile our app or just install that  [apk](https://github.com/ffedoroff/interstellar/raw/master/mobile/wear-release.apk)
+Unfortunately our app is not allowed in google play, because it use not original watch design. So you able to download and compile our app or just install that  [apk](https://github.com/ffedoroff/interstellar/raw/master/mobile/wear-release.apk)
 
 ### How to use
 
@@ -31,4 +31,6 @@ If you want to stop Morse message playing on your watch just click that red butt
 
 We build that app on google hackaton #gdg #devfest 2014 #omsk
 
-Main contributors is [Roman Fedorov](https://github.com/ffedoroff/) and [Konstantin Dravolin](https://github.com/kdravolin)
+Main contributors are [Roman Fedorov](https://github.com/ffedoroff/)
+and [Konstantin Dravolin](https://github.com/kdravolin)
+and [Dmitry Kazimirov](https://github.com/intari)

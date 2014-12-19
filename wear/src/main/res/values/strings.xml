@@ -2,5 +2,9 @@
 <resources>
 
     <string name="app_name">wfinterstellar</string>
+    <string name="digital_config_name">configuration</string>
+    <string name="title_activity_watch_config">WatchConfigActivity</string>
+    <string name="not_yet_implemented">Configuration is not yet implemented!</string>
+    <string name="action_settings">Settings</string>
 
 </resources>

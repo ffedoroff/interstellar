@@ -1,4 +1,4 @@
-package ru.rfedorov.wfinterstellar;
+package ru.rfedorov.morseface;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;

@@ -1,4 +1,4 @@
-package ru.rfedorov.wfinterstellar;
+package ru.rfedorov.morseface;
 
 import android.content.Intent;
 import android.content.IntentSender;

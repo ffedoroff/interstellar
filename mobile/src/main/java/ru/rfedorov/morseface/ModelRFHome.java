@@ -1,4 +1,4 @@
-package ru.rfedorov.wfinterstellar;
+package ru.rfedorov.morseface;
 
 import java.util.AbstractMap;
 import java.util.TreeMap;

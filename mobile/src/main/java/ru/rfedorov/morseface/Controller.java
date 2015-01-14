@@ -1,4 +1,4 @@
-package ru.rfedorov.wfinterstellar;
+package ru.rfedorov.morseface;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -30,7 +30,7 @@ public class Controller implements GoogleApiClient.ConnectionCallbacks,
     GoogleApiClient googleClient;
     private static Controller ourInstance = new Controller();
 
-    private ru.rfedorov.wfinterstellar.ModelRFHome model;
+    private ru.rfedorov.morseface.ModelRFHome model;
     public LoginActivity mainActivity;
 
     public static Controller getInstance() {

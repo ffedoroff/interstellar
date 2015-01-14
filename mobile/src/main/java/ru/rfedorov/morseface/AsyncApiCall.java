@@ -1,4 +1,4 @@
-package ru.rfedorov.wfinterstellar;
+package ru.rfedorov.morseface;
 
 import android.content.Context;
 import android.net.http.AndroidHttpClient;
@@ -45,7 +45,7 @@ public abstract class AsyncApiCall extends AsyncTask<String, Void, Boolean> {
     }
 
     private String getConfigParameter(String name) {
-        return PreferenceManager.getDefaultSharedPreferences(ru.rfedorov.wfinterstellar.InterstellarApplication.getAppContext()).getString(name, "");
+        return PreferenceManager.getDefaultSharedPreferences(ru.rfedorov.morseface.InterstellarApplication.getAppContext()).getString(name, "");
     }
 
     private Boolean api_message(String... params) {

@@ -42,7 +42,7 @@ MERGED from AndroidManifest.xml:4:5
 		ADDED from AndroidManifest.xml:20:9
 	android:name
 		ADDED from AndroidManifest.xml:21:9
-activity#ru.rfedorov.wfinterstellar.LoginActivity
+activity#ru.rfedorov.morseface.LoginActivity
 ADDED from AndroidManifest.xml:22:9
 	android:label
 		ADDED from AndroidManifest.xml:25:13
@@ -60,7 +60,7 @@ category#android.intent.category.LAUNCHER
 ADDED from AndroidManifest.xml:28:17
 	android:name
 		ADDED from AndroidManifest.xml:28:27
-service#ru.rfedorov.wfinterstellar.ListenerService
+service#ru.rfedorov.morseface.ListenerService
 ADDED from AndroidManifest.xml:31:9
 	android:name
 		ADDED from AndroidManifest.xml:31:18

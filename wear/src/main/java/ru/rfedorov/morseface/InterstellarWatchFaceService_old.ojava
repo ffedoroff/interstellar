@@ -1,20 +1,4 @@
-/*
- * Copyright (C) 2014 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-package ru.rfedorov.wfinterstellar;
+package ru.rfedorov.morseface;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -23,10 +7,12 @@ import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -36,7 +22,9 @@ import android.support.wearable.watchface.WatchFaceService;
 import android.support.wearable.watchface.WatchFaceStyle;
 import android.text.format.Time;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.SurfaceHolder;
+import android.view.View;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -52,15 +40,21 @@ import java.util.concurrent.TimeUnit;
  * Sample analog watch face with a ticking second hand. In ambient mode, the second hand isn't
  * shown. On devices with low-bit ambient mode, the hands are drawn without anti-aliasing in ambient
  * mode. The watch face is drawn with less contrast in mute mode.
+ *
+ *
  */
 public class InterstellarWatchFaceService extends CanvasWatchFaceService implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = "AnalogWatchFaceService";
     private static final String msgPathMobile = "/rfedorov_mobile";
     GoogleApiClient googleClient;
-    ru.rfedorov.wfinterstellar.Message mMessage = new ru.rfedorov.wfinterstellar.Message();
-    private int prevSec = 0;
-    private boolean normalMode;
+    ru.rfedorov.wfintmorsefaceage mMessage = new ru.rfedorov.wfinterstellar.Message();
+
+    /**
+     * Update rate in milliseconds for interactive mode. We update once a second to advance the
+     * second hand.
+     */
+    private static final long INTERACTIVE_UPDATE_RATE_MS = TimeUnit.SECONDS.toMillis(1);
 
     private void sendInitMessage() {
         Log.v(TAG, "sendInitMessage");
@@ -76,6 +70,33 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
             Log.v(TAG, "onReceive" + msg);
             mMessage.setMessage(msg);
         }
+    }
+
+    // Send a message when the data layer connection is successful.
+    @Override
+    public void onConnected(Bundle connectionHint) {
+        Log.v(TAG, "onConnected");
+        sendInitMessage();
+    }
+
+//    // Disconnect from the data layer when the Activity stops
+//    @Override
+//    protected void onStop() {
+//        if (null != googleClient && googleClient.isConnected()) {
+//            googleClient.disconnect();
+//        }
+//        super.onStop();
+//    }
+
+    // Placeholders for required connection callbacks
+    @Override
+    public void onConnectionSuspended(int cause) {
+        Log.e(TAG, "wear onConnectionSuspended cause:"+cause);
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.e(TAG, "wear onConnectionFailed result:"+connectionResult);
     }
 
     class SendToDataLayerThread extends Thread {
@@ -101,30 +122,6 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
         }
     }
 
-    // Placeholders for required connection callbacks
-    @Override
-    public void onConnectionSuspended(int cause) {
-        Log.e(TAG, "wear onConnectionSuspended cause:"+cause);
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.e(TAG, "wear onConnectionFailed result:"+connectionResult);
-    }
-
-    // Send a message when the data layer connection is successful.
-    @Override
-    public void onConnected(Bundle connectionHint) {
-        Log.v(TAG, "onConnected");
-        sendInitMessage();
-    }
-
-    /**
-     * Update rate in milliseconds for interactive mode. We update once a second to advance the
-     * second hand.
-     */
-    private static final long INTERACTIVE_UPDATE_RATE_MS = TimeUnit.SECONDS.toMillis(1);
-
     @Override
     public Engine onCreateEngine() {
         Log.v(TAG, "onCreateEngine");
@@ -143,6 +140,8 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
         sendInitMessage();
 
         return new Engine();
+
+
     }
 
     private class Engine extends CanvasWatchFaceService.Engine {
@@ -152,6 +151,7 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
         Paint mMinutePaint;
         Paint mSecondPaint;
         Paint mTickPaint;
+        Paint mPaint;
         boolean mMute;
         Time mTime;
 
@@ -192,7 +192,16 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
         boolean mLowBitAmbient;
 
         Bitmap mBackgroundBitmap;
+        Bitmap mArrowSecBitmap;
+        Bitmap mArrowMinBitmap;
+        Bitmap mArrowHourBitmap;
+
+        Bitmap mArrowSecScaledBitmap;
+        Bitmap mArrowMinScaledBitmap;
+        Bitmap mArrowHourScaledBitmap;
         Bitmap mBackgroundScaledBitmap;
+        private boolean normalMode;
+        private int prevSec = 0;
 
         @Override
         public void onCreate(SurfaceHolder holder) {
@@ -201,15 +210,25 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
             }
             super.onCreate(holder);
 
+            normalMode = true;
+
             setWatchFaceStyle(new WatchFaceStyle.Builder(InterstellarWatchFaceService.this)
                     .setCardPeekMode(WatchFaceStyle.PEEK_MODE_SHORT)
-                    .setBackgroundVisibility(WatchFaceStyle.BACKGROUND_VISIBILITY_INTERRUPTIVE)
+                    .setBackgroundVisibility(WatchFaceStyle.BACKGROUND_VISIBILITY_PERSISTENT)
                     .setShowSystemUiTime(false)
+                    .setStatusBarGravity(Gravity.CENTER)
                     .build());
 
             Resources resources = InterstellarWatchFaceService.this.getResources();
-            Drawable backgroundDrawable = resources.getDrawable(R.drawable.bg);
+
+            Drawable backgroundDrawable = resources.getDrawable(R.drawable.bg_watch);
             mBackgroundBitmap = ((BitmapDrawable) backgroundDrawable).getBitmap();
+            Drawable arrowDrawable = resources.getDrawable(R.drawable.sec1);
+            mArrowSecBitmap = ((BitmapDrawable) arrowDrawable).getBitmap();
+            Drawable arrowMinDrawable = resources.getDrawable(R.drawable.min1);
+            mArrowMinBitmap = ((BitmapDrawable) arrowMinDrawable).getBitmap();
+            Drawable arrowHourDrawable = resources.getDrawable(R.drawable.hours1);
+            mArrowHourBitmap = ((BitmapDrawable) arrowHourDrawable).getBitmap();
 
             mHourPaint = new Paint();
             mHourPaint.setARGB(255, 200, 200, 200);
@@ -233,6 +252,10 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
             mTickPaint.setARGB(100, 255, 255, 255);
             mTickPaint.setStrokeWidth(2.f);
             mTickPaint.setAntiAlias(true);
+
+            mPaint = new Paint();
+            mPaint.setAntiAlias(true);
+            mPaint.setFilterBitmap(true);
 
             mTime = new Time();
         }
@@ -296,6 +319,7 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
 
         @Override
         public void onDraw(Canvas canvas, Rect bounds) {
+//            mTime.clear(intent.getStringExtra("time-zone"));
             mTime.setToNow();
 
             int width = bounds.width();
@@ -307,7 +331,16 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
                     || mBackgroundScaledBitmap.getHeight() != height) {
                 mBackgroundScaledBitmap = Bitmap.createScaledBitmap(mBackgroundBitmap,
                         width, height, true /* filter */);
+                float d = (float)mBackgroundBitmap.getWidth() / (float)width;
+                mArrowHourScaledBitmap = Bitmap.createScaledBitmap(mArrowHourBitmap,
+                        (int)((float)mArrowHourBitmap.getWidth() / d), mBackgroundScaledBitmap.getHeight(), true);
+                mArrowMinScaledBitmap = Bitmap.createScaledBitmap(mArrowMinBitmap,
+                        (int)((float)mArrowMinBitmap.getWidth() / d), mBackgroundScaledBitmap.getHeight(), true);
+                mArrowSecScaledBitmap = Bitmap.createScaledBitmap(mArrowSecBitmap,
+                        (int)((float)mArrowSecBitmap.getWidth() / d), mBackgroundScaledBitmap.getHeight(), true);
+
             }
+
             canvas.drawBitmap(mBackgroundScaledBitmap, 0, 0, null);
 
             // Find the center. Ignore the window insets so that, on round watches with a
@@ -315,18 +348,6 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
             // portion.
             float centerX = width / 2f;
             float centerY = height / 2f;
-
-            // Draw the ticks.
-            float innerTickRadius = centerX - 10;
-            for (int tickIndex = 0; tickIndex < 12; tickIndex++) {
-                float tickRot = (float) (tickIndex * Math.PI * 2 / 12);
-                float innerX = (float) Math.sin(tickRot) * innerTickRadius;
-                float innerY = (float) -Math.cos(tickRot) * innerTickRadius;
-                float outerX = (float) Math.sin(tickRot) * centerX;
-                float outerY = (float) -Math.cos(tickRot) * centerX;
-                canvas.drawLine(centerX + innerX, centerY + innerY,
-                        centerX + outerX, centerY + outerY, mTickPaint);
-            }
 
             int second = mTime.second;
             if (mMessage.messageExist()) {
@@ -341,44 +362,35 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
                 }
             }
 
-//            float secRot = mTime.second / 30f * (float) Math.PI;
-            float secRot = second / 30f * (float) Math.PI;
-            int minutes = mTime.minute;
-            float minRot = minutes / 30f * (float) Math.PI;
-            float hrRot = ((mTime.hour + (minutes / 60f)) / 6f ) * (float) Math.PI;
+            Matrix mH = new Matrix();
+            mH.postRotate(360 / 60 * mTime.hour, mArrowHourScaledBitmap.getWidth()/2, mArrowHourScaledBitmap.getHeight()/2);
+            mH.postTranslate(centerX - mArrowHourScaledBitmap.getWidth()/2, 0);
+            canvas.drawBitmap(mArrowHourScaledBitmap, mH, mPaint);
 
-            float secLength = centerX - 20;
-            float minLength = centerX - 40;
-            float hrLength = centerX - 80;
+            Matrix mM = new Matrix();
+            mM.postRotate(360 / 60 * mTime.minute, mArrowMinScaledBitmap.getWidth()/2, mArrowMinScaledBitmap.getHeight()/2);
+            mM.postTranslate(centerX - mArrowMinScaledBitmap.getWidth()/2, 0);
+            canvas.drawBitmap(mArrowMinScaledBitmap, mM, mPaint);
 
-            if (!isInAmbientMode()) {
-                float secX = (float) Math.sin(secRot) * secLength;
-                float secY = (float) -Math.cos(secRot) * secLength;
-                canvas.drawLine(centerX, centerY, centerX + secX, centerY + secY, mSecondPaint);
-            }
+            Matrix mS = new Matrix();
+            mS.postRotate(360 / 60 * second, mArrowSecScaledBitmap.getWidth()/2, mArrowSecScaledBitmap.getHeight()/2);
+            mS.postTranslate(centerX - mArrowSecScaledBitmap.getWidth()/2, 0);
+            canvas.drawBitmap(mArrowSecScaledBitmap, mS, mPaint);
 
-            float minX = (float) Math.sin(minRot) * minLength;
-            float minY = (float) -Math.cos(minRot) * minLength;
-            canvas.drawLine(centerX, centerY, centerX + minX, centerY + minY, mMinutePaint);
-
-            float hrX = (float) Math.sin(hrRot) * hrLength;
-            float hrY = (float) -Math.cos(hrRot) * hrLength;
-            canvas.drawLine(centerX, centerY, centerX + hrX, centerY + hrY, mHourPaint);
+//            float minX = (float) Math.sin(minRot) * minLength;
+//            float minY = (float) -Math.cos(minRot) * minLength;
+//            canvas.drawLine(centerX, centerY, centerX + minX, centerY + minY, mMinutePaint);
+//
+//            float hrX = (float) Math.sin(hrRot) * hrLength;
+//            float hrY = (float) -Math.cos(hrRot) * hrLength;
+//            canvas.drawLine(centerX, centerY, centerX + hrX, centerY + hrY, mHourPaint);
 
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
-            if (!isInAmbientMode() && mMessage.messageExist()) {
-                try {
-                    Thread.sleep(50);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                invalidate();
-            }
+            invalidate();
         }
 
         @Override

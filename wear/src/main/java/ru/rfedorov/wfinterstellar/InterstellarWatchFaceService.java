@@ -30,6 +30,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.PowerManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.wearable.watchface.CanvasWatchFaceService;
 import android.support.wearable.watchface.WatchFaceService;
@@ -193,6 +194,8 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
 
         Bitmap mBackgroundBitmap;
         Bitmap mBackgroundScaledBitmap;
+        private PowerManager.WakeLock mWakeLock;
+
 
         @Override
         public void onCreate(SurfaceHolder holder) {
@@ -200,6 +203,8 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
                 Log.d(TAG, "onCreate");
             }
             super.onCreate(holder);
+            PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
+            mWakeLock = powerManager.newWakeLock((PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP), "MyWakelockTag");
 
             setWatchFaceStyle(new WatchFaceStyle.Builder(InterstellarWatchFaceService.this)
                     .setCardPeekMode(WatchFaceStyle.PEEK_MODE_SHORT)
@@ -333,11 +338,17 @@ public class InterstellarWatchFaceService extends CanvasWatchFaceService impleme
                 if (normalMode){
                     prevSec = second;
                     normalMode = false;
+                    if (!mWakeLock.isHeld()) {
+                        mWakeLock.acquire();
+                    }
                 }
                 second = mMessage.getCode(prevSec);
             } else {
                 if (!normalMode){
                     normalMode = true;
+                    if(mWakeLock.isHeld()) {
+                        mWakeLock.release();
+                    }
                 }
             }
 
